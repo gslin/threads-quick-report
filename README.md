@@ -9,3 +9,7 @@ A browser extension for quickly reporting posts on Threads.
 ## License
 
 See [LICENSE](LICENSE).
+
+## Other
+
+This project is heavily relied on Claude Code.
