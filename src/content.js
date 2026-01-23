@@ -171,7 +171,7 @@
             btn.title = config.title;
             btn.style.cssText = `
                 background: transparent;
-                border: 1px solid var(--barcelona-primary-outline, #ccc);
+                border: 1px solid currentColor;
                 border-radius: 4px;
                 cursor: pointer;
                 font-size: 11px;
@@ -179,11 +179,11 @@
                 padding: 2px 6px;
                 opacity: 0.6;
                 transition: opacity 0.2s, background 0.2s;
-                color: var(--barcelona-primary-text, #000);
+                color: inherit;
             `;
             btn.onmouseenter = () => {
                 btn.style.opacity = '1';
-                btn.style.background = 'var(--barcelona-hover-background, #f0f0f0)';
+                btn.style.background = 'var(--barcelona-hover-background, rgba(128, 128, 128, 0.2))';
             };
             btn.onmouseleave = () => {
                 btn.style.opacity = '0.6';
