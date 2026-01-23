@@ -214,6 +214,9 @@
             // Navigation bar More button uses <rect> elements (hamburger menu)
             if (!svg.querySelector('circle')) return;
 
+            // Skip if inside a dialog (e.g., compose dialog)
+            if (svg.closest('[role="dialog"]')) return;
+
             // Find the clickable button container (role="button" ancestor)
             let moreButton = svg.closest('[role="button"]');
             if (!moreButton) return;
