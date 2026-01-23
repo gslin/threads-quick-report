@@ -1,6 +1,8 @@
 # threads-quick-report
 
-A browser extension for quickly reporting posts on Threads.
+A browser extension for quickly reporting posts on Threads.  Also, I've written about why I developed this:
+
+* https://www.threads.com/@gslin/post/DT1agT9j061 (in Chinese)
 
 ## Installation
 
