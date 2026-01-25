@@ -7,6 +7,7 @@ A browser extension for quickly reporting posts on Threads.  Also, I've written 
 ## Installation
 
 * https://chromewebstore.google.com/detail/threads-quick-report/mpkpnajifbcmigekbfcdgcailabfgjcg
+* https://addons.mozilla.org/en-US/firefox/addon/threads-quick-report/
 
 ## License
 
