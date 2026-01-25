@@ -4,6 +4,9 @@
     // Multi-language labels for Report button
     const REPORT_LABELS = ['Report', '檢舉'];
 
+    // Multi-language labels for Done button
+    const DONE_LABELS = ['Done', '完成'];
+
     // Report category mapping (first level) - array for multi-language support
     const REPORT_CATEGORIES = {
         'bullying': ['Bullying or unwanted contact', '霸凌或擾人的聯繫'],
@@ -150,6 +153,14 @@
                 await new Promise(r => setTimeout(r, 100));
                 subBtn.click();
             }
+
+            // Step 5: Wait for and click the Done button
+            const doneSelectors = DONE_LABELS.map(l =>
+                `[role="dialog"] [role="button"][aria-label="${l}"]`
+            ).join(', ');
+            const doneBtn = await waitForElement(doneSelectors);
+            await new Promise(r => setTimeout(r, 100));
+            doneBtn.click();
 
             console.log(`[Threads Quick Report] Reported as: ${categoryLabels[0]}${subcategoryLabels ? ' > ' + subcategoryLabels[0] : ''}`);
         } catch (error) {
