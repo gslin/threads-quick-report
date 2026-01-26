@@ -7,6 +7,12 @@
     // Multi-language labels for Done button
     const DONE_LABELS = ['Done', '完成'];
 
+    // Multi-language labels for "I don't know them" button (bullying flow)
+    const DONT_KNOW_THEM_LABELS = ["I don't know them", '我不認識對方'];
+
+    // Multi-language labels for "No" button (bullying flow)
+    const NO_LABELS = ['No', '否'];
+
     // Report category mapping (first level) - array for multi-language support
     const REPORT_CATEGORIES = {
         'bullying': ['Bullying or unwanted contact', '霸凌或擾人的聯繫'],
@@ -152,6 +158,25 @@
 
                 await new Promise(r => setTimeout(r, 100));
                 subBtn.click();
+            }
+
+            // Step 4.5: For bullying reports, handle additional questions
+            if (reportKey === 'bullying') {
+                // Click "I don't know them"
+                const dontKnowSelectors = DONT_KNOW_THEM_LABELS.map(l =>
+                    `[role="dialog"] [role="button"][aria-label="${l}"]`
+                ).join(', ');
+                const dontKnowBtn = await waitForElement(dontKnowSelectors);
+                await new Promise(r => setTimeout(r, 100));
+                dontKnowBtn.click();
+
+                // Click "No"
+                const noSelectors = NO_LABELS.map(l =>
+                    `[role="dialog"] [role="button"][aria-label="${l}"]`
+                ).join(', ');
+                const noBtn = await waitForElement(noSelectors);
+                await new Promise(r => setTimeout(r, 100));
+                noBtn.click();
             }
 
             // Step 5: Wait for and click the Done button
