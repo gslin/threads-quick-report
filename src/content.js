@@ -246,9 +246,9 @@
         const moreSvgs = document.querySelectorAll('svg[aria-label="More"], svg[aria-label="更多"]');
 
         moreSvgs.forEach(svg => {
-            // Only target post More buttons (three dots icon uses <circle> elements)
+            // Only target post More buttons (three dots icon uses <path> elements)
             // Navigation bar More button uses <rect> elements (hamburger menu)
-            if (!svg.querySelector('circle')) return;
+            if (!svg.querySelector('path')) return;
 
             // Skip if inside a dialog (e.g., compose dialog)
             if (svg.closest('[role="dialog"]')) return;
