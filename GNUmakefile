@@ -23,7 +23,7 @@ $(FIREFOX_ZIP): src/manifest.json src/content.js $(ICONS) LICENSE
 $(CHROME_ZIP): src/manifest.json src/content.js $(ICONS) LICENSE
 	rm -rf build/chrome
 	mkdir -p build/chrome/icons
-	jq '.version |= (split(".") | .[0] + "." + (.[1] | .[0:4]) + "." + (.[1] | .[4:8]) + "." + .[2])' src/manifest.json > build/chrome/manifest.json
+	cp src/manifest.json build/chrome/
 	cp src/content.js build/chrome/
 	cp $(ICONS) build/chrome/icons/
 	cp LICENSE build/chrome/
