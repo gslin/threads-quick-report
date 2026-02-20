@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Threads Quick Report",
-  "version": "0.2026.220.0",
+  "version": "0.20260220.0",
   "description": "Quick report posts on Threads",
   "homepage_url": "https://github.com/gslin/threads-quick-report",
   "icons": {

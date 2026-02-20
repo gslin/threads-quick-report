@@ -1,6 +1,7 @@
 VERSION := $(shell jq -r '.version' src/manifest.json)
+CHROME_VERSION := $(shell echo "$(VERSION)" | awk -F. '{year=substr($$2,1,4); mmdd=substr($$2,5,4)+0; print "0." year "." mmdd "." $$3}')
 FIREFOX_ZIP := threads-quick-report-firefox-$(VERSION).zip
-CHROME_ZIP := threads-quick-report-chrome-$(VERSION).zip
+CHROME_ZIP := threads-quick-report-chrome-$(CHROME_VERSION).zip
 
 ICONS := src/icons/icon-16.png src/icons/icon-48.png src/icons/icon-96.png src/icons/icon-128.png
 
@@ -23,7 +24,7 @@ $(FIREFOX_ZIP): src/manifest.json src/content.js $(ICONS) LICENSE
 $(CHROME_ZIP): src/manifest.json src/content.js $(ICONS) LICENSE
 	rm -rf build/chrome
 	mkdir -p build/chrome/icons
-	cp src/manifest.json build/chrome/
+	jq --arg v "$(CHROME_VERSION)" '.version = $$v' src/manifest.json > build/chrome/manifest.json
 	cp src/content.js build/chrome/
 	cp $(ICONS) build/chrome/icons/
 	cp LICENSE build/chrome/
