@@ -253,6 +253,9 @@
             // Skip if inside a dialog (e.g., compose dialog)
             if (svg.closest('[role="dialog"]')) return;
 
+            // Skip if inside the site header navigation
+            if (svg.closest('#barcelona-header')) return;
+
             // Find the clickable button container (role="button" ancestor)
             let moreButton = svg.closest('[role="button"]');
             if (!moreButton) return;
