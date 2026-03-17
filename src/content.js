@@ -260,6 +260,9 @@
             let moreButton = svg.closest('[role="button"]');
             if (!moreButton) return;
 
+            // Skip dropdown triggers that contain text (e.g., "Top" sort dropdown)
+            if (moreButton.querySelector('span')) return;
+
             // Check if already injected
             if (hasQuickReportButton(moreButton)) return;
 
