@@ -352,7 +352,13 @@
         style.id = 'threads-quick-report-styles';
         style.textContent = `
             .threads-quick-report-container {
-                display: flex; align-items: center; gap: 2px; margin-right: 4px;
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 2px;
+                flex-basis: 100%;
+                width: 100%;
+                margin-top: 2px;
             }
             .threads-quick-report-btn {
                 background: transparent;
@@ -395,8 +401,12 @@
         return container;
     }
 
+    function getPostHeaderRow(moreButton) {
+        return moreButton.parentElement?.parentElement?.parentElement || null;
+    }
+
     function hasQuickReportButton(moreButton) {
-        return moreButton.parentElement?.parentElement?.querySelector('.threads-quick-report-container') !== null;
+        return getPostHeaderRow(moreButton)?.querySelector('.threads-quick-report-container') !== null;
     }
 
     function injectButtons() {
@@ -411,10 +421,12 @@
                 if (!moreButton || moreButton.querySelector('span')) return;
                 if (hasQuickReportButton(moreButton)) return;
 
-                const outerContainer = moreButton.parentElement?.parentElement;
-                if (!outerContainer) return;
+                const headerRow = getPostHeaderRow(moreButton);
+                const usernameCluster = headerRow?.firstElementChild;
+                if (!usernameCluster) return;
 
-                outerContainer.insertBefore(createQuickReportButtons(moreButton), moreButton.parentElement);
+                usernameCluster.style.flexWrap = 'wrap';
+                usernameCluster.appendChild(createQuickReportButtons(moreButton));
             });
     }
 
