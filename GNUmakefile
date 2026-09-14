@@ -5,7 +5,7 @@ CHROME_ZIP := threads-quick-report-chrome-$(CHROME_VERSION).zip
 
 ICONS := src/icons/icon-16.png src/icons/icon-48.png src/icons/icon-96.png src/icons/icon-128.png
 
-.PHONY: all clean firefox chrome firefox-sign
+.PHONY: all clean firefox chrome deploy firefox-sign
 
 all: firefox chrome
 
@@ -28,10 +28,15 @@ $(CHROME_ZIP): src/manifest.json src/content.js src/background.js src/onboarding
 	cp LICENSE build/chrome/
 	cd build/chrome && zip -r ../../$@ manifest.json content.js background.js onboarding.html onboarding.js icons/ LICENSE
 
-firefox-sign: firefox
+deploy: firefox
 	@if [ ! -f .env ]; then echo 'Missing .env. Copy .env.example to .env and fill in AMO API credentials.' >&2; exit 1; fi
 	set -a && . ./.env && set +a && \
+	if [ -z "$$WEB_EXT_API_KEY" ] || [ -z "$$WEB_EXT_API_SECRET" ]; then \
+		echo 'WEB_EXT_API_KEY and WEB_EXT_API_SECRET must be set in .env' >&2; exit 1; \
+	fi && \
 	npx --yes web-ext@latest sign --source-dir=build/firefox --channel=listed --approval-timeout=0
+
+firefox-sign: deploy
 
 clean:
 	rm -rf build/
