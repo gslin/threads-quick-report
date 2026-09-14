@@ -13,7 +13,6 @@ firefox: $(FIREFOX_ZIP)
 chrome: $(CHROME_ZIP)
 
 $(FIREFOX_ZIP): src/manifest.json src/content.js $(ICONS) LICENSE
-	rm -rf build/firefox
 	mkdir -p build/firefox/icons
 	cp src/manifest.json build/firefox/
 	cp src/content.js build/firefox/
@@ -22,7 +21,6 @@ $(FIREFOX_ZIP): src/manifest.json src/content.js $(ICONS) LICENSE
 	cd build/firefox && zip -r ../../$@ manifest.json content.js icons/ LICENSE
 
 $(CHROME_ZIP): src/manifest.json src/content.js $(ICONS) LICENSE
-	rm -rf build/chrome
 	mkdir -p build/chrome/icons
 	jq --arg v "$(CHROME_VERSION)" '.version = $$v' src/manifest.json > build/chrome/manifest.json
 	cp src/content.js build/chrome/
