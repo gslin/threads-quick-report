@@ -356,7 +356,8 @@
                 align-items: center;
                 flex-wrap: wrap;
                 gap: 2px;
-                margin-top: 2px;
+                width: 100%;
+                margin: 2px 0 6px;
             }
             .threads-quick-report-btn {
                 background: transparent;
@@ -403,6 +404,29 @@
         return moreButton.parentElement?.parentElement?.parentElement || null;
     }
 
+    function getPostBodyColumn(headerRow) {
+        const contentColumn = headerRow?.parentElement;
+        if (!contentColumn) return null;
+        let sibling = contentColumn.nextElementSibling;
+        while (sibling) {
+            const position = window.getComputedStyle(sibling).position;
+            if (position !== 'absolute' && position !== 'fixed') return sibling;
+            sibling = sibling.nextElementSibling;
+        }
+        return null;
+    }
+
+    function findOwnButtons(headerRow, host) {
+        const contentColumn = headerRow.parentElement;
+        for (const root of [host, contentColumn, headerRow]) {
+            if (!root) continue;
+            for (const child of root.children) {
+                if (child.classList.contains('threads-quick-report-container')) return child;
+            }
+        }
+        return headerRow.querySelector('.threads-quick-report-container');
+    }
+
     function injectButtons() {
         injectStyles();
 
@@ -415,18 +439,18 @@
                 if (!moreButton || moreButton.querySelector('span')) return;
 
                 const headerRow = getPostHeaderRow(moreButton);
-                const contentColumn = headerRow?.parentElement;
-                if (!contentColumn) return;
+                if (!headerRow) return;
 
-                const existing = contentColumn.querySelector('.threads-quick-report-container');
+                const host = getPostBodyColumn(headerRow) || headerRow.parentElement;
+                if (!host) return;
+
+                const existing = findOwnButtons(headerRow, host);
                 if (existing) {
-                    if (existing.previousElementSibling !== headerRow) {
-                        headerRow.after(existing);
-                    }
+                    if (existing.parentElement !== host) host.prepend(existing);
                     return;
                 }
 
-                headerRow.after(createQuickReportButtons(moreButton));
+                host.prepend(createQuickReportButtons(moreButton));
             });
     }
 
