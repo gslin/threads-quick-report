@@ -1,6 +1,8 @@
 (function() {
     'use strict';
 
+    console.log('[Threads Quick Report] Loaded');
+
     // Multi-language labels
     const REPORT_LABELS = ['Report', '檢舉'];
     const DONE_LABELS = ['Done', '完成'];
@@ -456,15 +458,16 @@
 
     // --- Init ---
 
-    injectButtons();
-
-    const observer = new MutationObserver((mutations) => {
-        if (mutations.some(m => m.addedNodes.length > 0)) {
-            clearTimeout(observer.debounceTimer);
-            observer.debounceTimer = setTimeout(injectButtons, 200);
-        }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    console.log('[Threads Quick Report] Loaded');
+    try {
+        injectButtons();
+        const observer = new MutationObserver((mutations) => {
+            if (mutations.some(m => m.addedNodes.length > 0)) {
+                clearTimeout(observer.debounceTimer);
+                observer.debounceTimer = setTimeout(injectButtons, 200);
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    } catch (error) {
+        console.error('[Threads Quick Report] Init failed:', error);
+    }
 })();
