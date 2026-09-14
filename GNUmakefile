@@ -5,7 +5,7 @@ CHROME_ZIP := threads-quick-report-chrome-$(CHROME_VERSION).zip
 
 ICONS := src/icons/icon-16.png src/icons/icon-48.png src/icons/icon-96.png src/icons/icon-128.png
 
-.PHONY: all clean firefox chrome
+.PHONY: all clean firefox chrome firefox-sign
 
 all: firefox chrome
 
@@ -27,6 +27,11 @@ $(CHROME_ZIP): src/manifest.json src/content.js src/background.js src/onboarding
 	cp $(ICONS) build/chrome/icons/
 	cp LICENSE build/chrome/
 	cd build/chrome && zip -r ../../$@ manifest.json content.js background.js onboarding.html onboarding.js icons/ LICENSE
+
+firefox-sign: firefox
+	@if [ ! -f .env ]; then echo 'Missing .env. Copy .env.example to .env and fill in AMO API credentials.' >&2; exit 1; fi
+	set -a && . ./.env && set +a && \
+	npx --yes web-ext@latest sign --source-dir=build/firefox --channel=listed --approval-timeout=0
 
 clean:
 	rm -rf build/
