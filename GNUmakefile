@@ -30,5 +30,4 @@ $(CHROME_ZIP): src/manifest.json src/content.js src/background.js src/onboarding
 
 clean:
 	rm -rf build/
-	rm -f $(filter-out $(FIREFOX_ZIP),$(wildcard threads-quick-report-firefox-*.zip))
-	rm -f $(filter-out $(CHROME_ZIP),$(wildcard threads-quick-report-chrome-*.zip))
+	rm -f threads-quick-report-firefox-*.zip threads-quick-report-chrome-*.zip
