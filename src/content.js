@@ -356,8 +356,6 @@
                 align-items: center;
                 flex-wrap: wrap;
                 gap: 2px;
-                flex-basis: 100%;
-                width: 100%;
                 margin-top: 2px;
             }
             .threads-quick-report-btn {
@@ -405,10 +403,6 @@
         return moreButton.parentElement?.parentElement?.parentElement || null;
     }
 
-    function hasQuickReportButton(moreButton) {
-        return getPostHeaderRow(moreButton)?.querySelector('.threads-quick-report-container') !== null;
-    }
-
     function injectButtons() {
         injectStyles();
 
@@ -419,14 +413,20 @@
 
                 const moreButton = svg.closest('[role="button"]');
                 if (!moreButton || moreButton.querySelector('span')) return;
-                if (hasQuickReportButton(moreButton)) return;
 
                 const headerRow = getPostHeaderRow(moreButton);
-                const usernameCluster = headerRow?.firstElementChild;
-                if (!usernameCluster) return;
+                const contentColumn = headerRow?.parentElement;
+                if (!contentColumn) return;
 
-                usernameCluster.style.flexWrap = 'wrap';
-                usernameCluster.appendChild(createQuickReportButtons(moreButton));
+                const existing = contentColumn.querySelector('.threads-quick-report-container');
+                if (existing) {
+                    if (existing.previousElementSibling !== headerRow) {
+                        headerRow.after(existing);
+                    }
+                    return;
+                }
+
+                headerRow.after(createQuickReportButtons(moreButton));
             });
     }
 
