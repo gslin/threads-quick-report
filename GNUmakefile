@@ -12,23 +12,21 @@ all: firefox chrome
 firefox: $(FIREFOX_ZIP)
 chrome: $(CHROME_ZIP)
 
-$(FIREFOX_ZIP): src/manifest.json src/content.js src/background.js $(ICONS) LICENSE
+$(FIREFOX_ZIP): src/manifest.json src/content.js src/background.js src/onboarding.html src/onboarding.js $(ICONS) LICENSE
 	mkdir -p build/firefox/icons
 	cp src/manifest.json build/firefox/
-	cp src/content.js build/firefox/
-	cp src/background.js build/firefox/
+	cp src/content.js src/background.js src/onboarding.html src/onboarding.js build/firefox/
 	cp $(ICONS) build/firefox/icons/
 	cp LICENSE build/firefox/
-	cd build/firefox && zip -r ../../$@ manifest.json content.js background.js icons/ LICENSE
+	cd build/firefox && zip -r ../../$@ manifest.json content.js background.js onboarding.html onboarding.js icons/ LICENSE
 
-$(CHROME_ZIP): src/manifest.json src/content.js src/background.js $(ICONS) LICENSE
+$(CHROME_ZIP): src/manifest.json src/content.js src/background.js src/onboarding.html src/onboarding.js $(ICONS) LICENSE
 	mkdir -p build/chrome/icons
 	jq --arg v "$(CHROME_VERSION)" '.version = $$v | .background = {"service_worker": "background.js"}' src/manifest.json > build/chrome/manifest.json
-	cp src/content.js build/chrome/
-	cp src/background.js build/chrome/
+	cp src/content.js src/background.js src/onboarding.html src/onboarding.js build/chrome/
 	cp $(ICONS) build/chrome/icons/
 	cp LICENSE build/chrome/
-	cd build/chrome && zip -r ../../$@ manifest.json content.js background.js icons/ LICENSE
+	cd build/chrome && zip -r ../../$@ manifest.json content.js background.js onboarding.html onboarding.js icons/ LICENSE
 
 clean:
 	rm -rf build/
