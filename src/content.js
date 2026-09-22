@@ -53,7 +53,10 @@
         }
     };
 
-    const POST_MORE_ICON_PATH_PREFIX = 'M4 14C5.10457 14';
+    const POST_MORE_ICON_PATH_PREFIXES = [
+        'M4 14C5.10457 14',
+        'M4 14a2 2 0 1 0 0-4'
+    ];
     const REPORT_ICON_PATH_PREFIX = 'M12.001 15.0625C12.6223 15.0625';
     const REPORT_MENU_ITEM_INDEX = 6;
 
@@ -197,7 +200,8 @@
     // --- Report menu/dialog navigation ---
 
     function isPostMoreSvg(svg) {
-        return svg?.getAttribute('viewBox') === '0 0 24 24' && hasPathPrefix(svg, POST_MORE_ICON_PATH_PREFIX);
+        return svg?.getAttribute('viewBox') === '0 0 24 24'
+            && POST_MORE_ICON_PATH_PREFIXES.some(prefix => hasPathPrefix(svg, prefix));
     }
 
     function findReportMenuItem(menu = getActiveMenu()) {
