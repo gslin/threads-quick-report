@@ -410,6 +410,11 @@
         return moreButton.parentElement?.parentElement?.parentElement || null;
     }
 
+    // Posts link their timestamp to the post permalink; activity items don't.
+    function hasPostPermalinkTime(headerRow) {
+        return !!headerRow.querySelector('a[href*="/post/"] time');
+    }
+
     function getPostBodyColumn(headerRow) {
         const contentColumn = headerRow?.parentElement;
         if (!contentColumn) return null;
@@ -445,7 +450,7 @@
                 if (!moreButton || moreButton.querySelector('span')) return;
 
                 const headerRow = getPostHeaderRow(moreButton);
-                if (!headerRow) return;
+                if (!headerRow || !hasPostPermalinkTime(headerRow)) return;
 
                 const host = getPostBodyColumn(headerRow) || headerRow.parentElement;
                 if (!host) return;
