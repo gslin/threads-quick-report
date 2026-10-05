@@ -3,8 +3,147 @@
 
     console.log('[Threads Quick Report] Loaded');
 
-    // Multi-language labels
-    const REPORT_LABELS = ['Report', '檢舉'];
+    // Report flow labels for all Threads web locales (collected via ?hl=<locale>)
+    const LABELS = {
+        report: [
+            'Report', '檢舉', 'Rapporteer', 'إبلاغ', 'Докладване', 'Nahlásit', 'Anmeld', 'Melden', 'Αναφορά',
+            'Reportar', 'گزارش دادن', 'Ilmianna', 'Signaler', 'דיווח', 'रिपोर्ट करें', 'Prijavi', 'Jelentés',
+            'Laporkan', 'Segnala', '報告する', '신고하기', 'Lapor', 'Rapporter', 'Rapporteren', 'Zgłoś', 'Denunciar',
+            'Raportează', 'Пожаловаться', 'Nahlásiť', 'Пријавите', 'Anmäl', 'รายงาน', 'I-report', 'Şikayet Et',
+            'Поскаржитися', 'Báo cáo', '举报', '舉報'
+        ],
+        bullying: [
+            'Bullying or unwanted contact', '霸凌或擾人的聯繫', 'Afknouery of ongewenste kontak',
+            'مضايقة أو تواصل غير مرغوب فيه', 'Малтретиране или нежелан контакт', 'Šikana nebo nevyžádaný kontakt',
+            'Mobning eller uønsket kontakt', 'Mobbing oder unerwünschte Kontaktaufnahme',
+            'Εκφοβισμός ή ανεπιθύμητη επικοινωνία', 'Bullying o contacto no deseado', 'قلدری یا تماس ناخواسته',
+            'Kiusaaminen tai ei-toivottu yhteydenotto', 'Intimidation ou contact indésirable',
+            'בריונות או קשר לא רצוי', 'धमकाना या अनचाहा संपर्क', 'Maltretiranje ili neželjeni kontakt',
+            'Megfélemlítés vagy nemkívánatos kapcsolatteremtés',
+            'Perundungan (bullying) atau kontak yang tidak diinginkan', 'Bullismo o contatto indesiderato',
+            'いじめ、または望まない接触', '따돌림 또는 원치 않는 연락', 'Pembulian atau hubungan yang tidak diingini',
+            'Mobbing eller uønsket kontakt', 'Pesten of ongewenst contact', 'Nękanie lub niechciane kontakty',
+            'Bullying ou contacto indesejado', 'Bullying ou contato indesejado', 'Bullying sau contacte nedorite',
+            'Травля или нежелательный контакт', 'Šikanovanie alebo neželaný kontakt',
+            'Малтретирање или нежељени контакт', 'Mobbning eller oönskad kontakt',
+            'การกลั่นแกล้งหรือการติดต่อที่ไม่พึงประสงค์', 'Pambu-bully, o hindi kanais-nais na pakikipag-ugnayan',
+            'Zorbalık veya istenmeyen iletişim', 'Цькування або небажаний контакт',
+            'Bắt nạt hoặc liên hệ theo cách không mong muốn', '欺凌或扰人联系', '欺凌或擾人的聯繫'
+        ],
+        bullyingSub: [
+            'Bullying or harassment', '霸凌或騷擾', 'Afknouery of teistering', 'مضايقة أو إساءة',
+            'Малтретиране или тормоз', 'Šikana nebo obtěžování', 'Mobning eller chikane',
+            'Mobbing oder Belästigung', 'Εκφοβισμός ή παρενόχληση', 'Bullying o acoso',
+            'قلدری یا آزار\u200cو\u200cاذیت', 'Kiusaaminen tai häirintä', 'Intimidation ou harcèlement',
+            'בריונות או הטרדה', 'यह कंटेंट धमकाने या उत्पीड़न करने से संबंधित है',
+            'Maltretiranje ili uznemiravanje', 'Megfélemlítés vagy zaklatás',
+            'Perundungan (bullying) atau pelecehan', 'Bullismo o intimidazioni', 'いじめまたは嫌がらせ', '따돌림 또는 괴롭힘',
+            'Membuli atau mengganggu', 'Mobbing eller trakassering', 'Pesten of intimidatie',
+            'Nękanie lub prześladowanie', 'Bullying ou assédio', 'Bullying sau hărţuire',
+            'Травля или преследование', 'Šikanovanie alebo obťažovanie', 'Претње или узнемиравање',
+            'Mobbning eller trakasserier', 'การกลั่นแกล้งหรือการคุกคาม', 'Pambu-bully o pangha-harass',
+            'Zorbalık veya taciz', 'Цькування чи переслідування', 'Bắt nạt hoặc quấy rối', '欺凌或骚扰', '欺凌或騷擾'
+        ],
+        unknownPerson: [
+            'I don’t know them', '我不認識對方', 'Ek ken hulle nie', 'لا أعرفه', 'Не го познавам',
+            'Daného člověka neznám', 'Jeg kender dem ikke', 'Ich kenne ihn/sie nicht', 'Δεν γνωρίζω τον χρήστη',
+            "I don't know them", 'Alguien que no conozco', 'او را نمی\u200cشناسم', 'En tunne tätä henkilöä',
+            'Je ne connais pas', 'האדם הזה לא מוכר לי', 'मैं उन्हें नहीं जानता', 'Ne poznajem tu osobu',
+            'Nem ismerem', 'Saya tidak mengenalnya', 'Una persona che non conosco', '知り合いではない', '모르는 사람임',
+            'Saya tidak mengenalinya', 'Jeg kjenner ikke vedkommende', 'Ik ken deze persoon niet',
+            'Nie znam tej osoby', 'Não conheço', 'Não conheço a pessoa', 'Nu o cunosc pe această persoană',
+            'Я не знаю этого человека', 'Tohto používateľa nepoznám', 'Не познајем ту особу', 'Jag känner inte hen',
+            'ฉันไม่รู้จัก', 'Hindi ko sila kilala', 'Kendisini tanımıyorum', 'Я не знаю цю людину',
+            'Tôi không biết người này', '我不认识的人'
+        ],
+        no: [
+            'No', '否', 'Nee', 'لا', 'Не', 'Ne', 'Nej', 'Nein', 'Όχι', 'خیر', 'Ei', 'Non', 'לא', 'नहीं', 'Nem',
+            'Tidak', 'いいえ', '아니요', 'Nei', 'Nie', 'Não', 'Nu', 'Нет', 'ไม่ใช่', 'Hindi', 'Hayır', 'Ні', 'Không'
+        ],
+        violence: [
+            'Violence, hate or exploitation', '暴力、仇恨或剝削', 'Geweld, haat of uitbuiting', 'عنف أو كراهية أو استغلال',
+            'Насилие, омраза или експлоатация', 'Násilí, nenávistné projevy nebo zneužívání',
+            'Vold, had eller udnyttelse', 'Gewalt, Hass oder Ausbeutung', 'Βία, μίσος ή εκμετάλλευση',
+            'Violencia, odio o explotación', 'خشونت، نفرت یا بهره\u200cکشی', 'Väkivalta, viha tai hyväksikäyttö',
+            'Violence, haine ou exploitation', 'אלימות, שנאה או ניצול', 'हिंसा, नफ़रत या शोषण',
+            'Nasilje, mržnja ili iskorištavanje', 'Erőszak, gyűlölet vagy mások kihasználása',
+            'Kekerasan, kebencian, atau eksploitasi', 'Violenza, odio o sfruttamento', '暴力、ヘイト、または搾取',
+            '폭력, 혐오 또는 학대', 'Keganasan, kebencian atau eksploitasi', 'Vold, hat eller utnyttelse',
+            'Przemoc, nienawiść lub wykorzystywanie', 'Violência, ódio ou exploração',
+            'Violenţă, incitare la ură sau exploatare', 'Насилие, ненависть или эксплуатация',
+            'Násilie, nenávisť alebo vykorisťovanie', 'Насиље, мржња или искоришћавање',
+            'Våld, hat eller utnyttjande', 'ความรุนแรง ความเกลียดชัง หรือการแสวงหาประโยชน์',
+            'Karahasan, galit o pananamantala', 'Şiddet, nefret veya sömürü',
+            'Насильство, ворожнеча або експлуатація', 'Bạo lực, thù ghét hoặc bóc lột', '暴力、仇恨或剥削'
+        ],
+        hate: [
+            'Hate speech or symbols', '仇恨言論或象徵符號', 'Haatspraak of -simbole', 'رموز أو خطاب يحض على الكراهية',
+            'Омразна реч или символи', 'Nenávistné slovní projevy nebo symboly', 'Hadefuld retorik eller symbolik',
+            'Hassrede oder -symbole', 'Εκφράσεις ή σύμβολα μίσους', 'Lenguaje o símbolos que incitan al odio',
+            'نمادها یا سخنان نفرت\u200cپراکنی', 'Vihapuhe tai -symbolit', 'Discours ou symboles haineux',
+            'דברי שטנה או סמלי שטנה', 'नफ़रत फैलाने वाली भाषा या प्रतीक', 'Govor ili simboli mržnje',
+            'Gyűlöletbeszéd vagy gyűlöletkeltő szimbólumok', 'Ujaran atau simbol kebencian',
+            "Discorsi o simboli che incitano all'odio", 'ヘイトスピーチまたは差別的なシンボル', '혐오 발언 또는 상징',
+            'Ucapan atau simbol berunsur kebencian', 'Hatefulle ytringer eller symboler',
+            'Haatdragend taalgebruik of haatdragende symbolen', 'Mowa nienawiści lub zakazane symbole',
+            'Discurso ou símbolos de incentivo ao ódio', 'Símbolos ou discurso de ódio',
+            'Limbaj sau simboluri care incită la ură', 'Враждебные высказывания или символы',
+            'Nenávistné prejavy alebo symboly', 'Говор или симболи мржње', 'Hatretorik eller hatsymboler',
+            'คำพูดหรือสัญลักษณ์ที่แสดงความเกลียดชัง', 'Hate speech o mga simbolo', 'Nefret söylemi veya sembolleri',
+            'Мова ворожнечі або ворожі символи', 'Biểu tượng hoặc ngôn từ gây thù ghét', '仇恨言论或符号'
+        ],
+        scam: [
+            'Scam, fraud or spam', '詐騙、詐欺或垃圾訊息', 'Strooipos, bedrog of swendelary',
+            'خداع أو احتيال أو محتوى غير مهم أو احتيالي', 'Мошеничество, измама или спам',
+            'Podvod, podfuk nebo spam', 'Svindel, bedrageri eller spam', 'Betrug oder Spam',
+            'Απάτη, παραπλάνηση ή σπαμ', 'Estafa, fraude o spam', 'کلاهبرداری، فریب یا هرزنامه',
+            'Huijaus, petos tai roskaposti', 'Arnaque, fraude ou spam', 'Arnaque, fraude ou contenu indésirable',
+            'הונאה, תרמית או ספאם', 'स्कैम, धोखाधड़ी या स्पैम', 'Obmana, prijevara ili neželjeni sadržaj',
+            'Átverés, csalás vagy kéretlen tartalom', 'Penipuan, penggelapan, atau spam', 'Truffa, frode o spam',
+            '詐欺またはスパム', '스캠, 사기 또는 스팸', 'Scam, penipuan atau spam', 'Scam, fraude of spam',
+            'Scam, oszustwo lub spam', 'Burla, fraude ou spam', 'Golpe, fraude ou spam',
+            'Spam, înşelătorie sau fraudă', 'Мошенничество, обман или спам', 'Podvod, podvodný trik alebo spam',
+            'Превара или непожељан садржај', 'Bluff, bedrägeri eller skräppost', 'การหลอกลวง การฉ้อโกง หรือสแปม',
+            'Scam, fraud o spam', 'Dolandırıcılık, sahtekarlık veya spam', 'Шахрайство, обман або спам',
+            'Lừa đảo, gian lận hoặc spam', '欺诈、诈骗或垃圾信息', '詐騙、欺詐或垃圾訊息'
+        ],
+        fraud: [
+            'Fraud or scam', '詐欺或詐騙', 'Bedrog of swendelary', 'احتيال أو خداع', 'Измама или скам', 'Podvod',
+            'Bedrag eller svindel', 'Betrug oder Scam', 'Απάτη', 'Fraude o estafa', 'تقلب یا کلاهبرداری',
+            'Petos tai huijaus', 'Fraude ou arnaque', 'תרמית או הונאה', 'धोखाधड़ी या स्कैम', 'Prijevara ili obmana',
+            'Csalás vagy átverés', 'Penggelapan atau penipuan', 'Frode o truffa', '詐欺行為', '거짓 또는 사기',
+            'Penipuan atau scam', 'Bedrageri eller svindel', 'Fraude of bedrog', 'Oszustwo', 'Fraude ou burla',
+            'Fraude ou golpe', 'Fraudă sau înşelătorie', 'Мошенничество или обман', 'Превара',
+            'Bedrägeri eller bluff', 'การหลอกลวงหรือการต้มตุ๋น', 'Panloloko o scam',
+            'Dolandırıcılık veya sahtekarlık', 'Шахрайство', 'Gian lận hoặc lừa đảo', '欺诈或诈骗', '欺詐或詐騙'
+        ],
+        spam: [
+            'Spam', '垃圾訊息', 'Strooipos', 'محتوى غير مهم أو احتيالي', 'Спам', 'Σπαμ', 'هرزنامه', 'Roskaposti',
+            'ספאם', 'स्पैम', 'Neželjeni sadržaj', 'Kéretlen tartalom', 'スパム', '스팸', 'Непожељан садржај',
+            'Skräppost', 'สแปม', '垃圾信息'
+        ],
+        falseInfo: [
+            'False information', '不實資訊', 'Vals inligting', 'معلومات زائفة', 'Фалшива информация',
+            'Nepravdivé informace', 'Falske oplysninger', 'Fehlinformationen', 'Ψευδείς πληροφορίες',
+            'Información falsa', 'اطلاعات غلط', 'Epätosia tietoja', 'Fausses informations', 'מידע לא נכון',
+            'गलत जानकारी', 'Netočne informacije', 'Hamis információ', 'Informasi palsu', 'Informazioni false',
+            '虚偽の情報', '거짓 정보', 'Maklumat palsu', 'Feilinformasjon', 'Onjuiste informatie', 'Fałszywe informacje',
+            'Informações falsas', 'Informação falsa', 'Informaţii false', 'Ложная информация',
+            'Nepravdivé informácie', 'Нетачне информације', 'Falsk information', 'ข้อมูลเท็จ', 'Maling impormasyon',
+            'Yanlış Bilgi', 'Неправдива інформація', 'Thông tin sai sự thật', '虚假信息'
+        ],
+        bot: [
+            'Bot or fake account', 'Bot 或假帳號', 'Bot nebo falešný účet', 'Bot eller falsk konto',
+            'Bot oder gefälschtes Konto', 'Bot ή ψεύτικος λογαριασμός', 'Bot o cuenta falsa',
+            'Botti tai väärennetty tili', 'Bot ou faux compte', 'बॉट या फ़ेक अकाउंट',
+            'Bot ili lažni korisnički račun', 'Robot vagy hamis fiók', 'Bot atau akun palsu',
+            'Account falso o gestito da un bot', 'ボットまたは偽アカウント', '봇 또는 가짜 계정', 'Bot atau akaun palsu',
+            'Bot-konto eller falsk konto', 'Bot of nepaccount', 'Bot lub fałszywe konto', 'Bot ou conta falsa',
+            'Robot sau cont fals', 'Бот или фальшивый аккаунт', 'Bot alebo falošný účet', 'Bot eller falskt konto',
+            'บอทหรือบัญชีปลอม', 'Bot o pekeng account', 'Bot veya sahte hesap', 'Бот або фальшивий обліковий запис',
+            'Tài khoản giả hoặc bot', '机器人或虚假帐户', '機械人程式或假帳戶'
+        ]
+    };
     const DONE_LABELS = ['Done', '完成'];
 
     // Consolidated report configuration
@@ -12,49 +151,49 @@
         bullying: {
             label: 'Bully',
             title: 'Bullying or harassment',
-            category: ['Bullying or unwanted contact', '霸凌或擾人的聯繫'],
+            category: LABELS.bullying,
             categoryIndex: 1,
-            subcategory: ['Bullying or harassment', '霸凌或騷擾'],
+            subcategory: LABELS.bullyingSub,
             subcategoryIndex: 1,
             extraSteps: [
-                { labels: ["I don't know them", '我不認識對方'], fallbackIndex: -1 },
-                { labels: ['No', '否'], fallbackIndex: -1 }
+                { labels: LABELS.unknownPerson, fallbackIndex: -1 },
+                { labels: LABELS.no, fallbackIndex: -1 }
             ]
         },
         spam: {
             label: 'Spam',
             title: 'Spam',
-            category: ['Scam, fraud or spam', '詐騙、詐欺或垃圾訊息'],
+            category: LABELS.scam,
             categoryIndex: 6,
-            subcategory: ['Spam', '垃圾訊息'],
+            subcategory: LABELS.spam,
             subcategoryIndex: 1
         },
         hate: {
             label: 'Hate',
             title: 'Hate speech or symbols',
-            category: ['Violence, hate or exploitation', '暴力、仇恨或剝削'],
+            category: LABELS.violence,
             categoryIndex: 3,
-            subcategory: ['Hate speech or symbols', '仇恨言論或象徵符號'],
+            subcategory: LABELS.hate,
             subcategoryIndex: 3
         },
         fraud: {
             label: 'Fraud',
             title: 'Fraud or scam',
-            category: ['Scam, fraud or spam', '詐騙、詐欺或垃圾訊息'],
+            category: LABELS.scam,
             categoryIndex: 6,
-            subcategory: ['Fraud or scam', '詐欺或詐騙'],
+            subcategory: LABELS.fraud,
             subcategoryIndex: 0
         },
         false: {
             label: 'False',
             title: 'False information',
-            category: ['False information', '不實資訊'],
+            category: LABELS.falseInfo,
             categoryIndex: 8
         },
         bot: {
             label: 'Bot',
             title: 'Bot or fake account',
-            category: ['Bot or fake account', 'Bot 或假帳號'],
+            category: LABELS.bot,
             categoryIndex: 7
         }
     };
@@ -213,7 +352,7 @@
 
     function findReportMenuItem(menu = getActiveMenu()) {
         const menuItems = getMenuItems(menu).filter(item => item.getAttribute('role') === 'menuitem');
-        return menuItems.find(item => matchesLabels(item, REPORT_LABELS))
+        return menuItems.find(item => matchesLabels(item, LABELS.report))
             || menuItems.find(item => hasPathPrefix(item, REPORT_ICON_PATH_PREFIX))
             || resolveFallbackIndex(menuItems, REPORT_MENU_ITEM_INDEX);
     }
@@ -230,7 +369,7 @@
         }
         const items = Array.from(document.querySelectorAll('[role="menuitem"], [role="button"]'))
             .filter(item => document.contains(item));
-        return items.find(item => matchesLabels(item, REPORT_LABELS))
+        return items.find(item => matchesLabels(item, LABELS.report))
             || items.find(item => hasPathPrefix(item, REPORT_ICON_PATH_PREFIX))
             || null;
     }
