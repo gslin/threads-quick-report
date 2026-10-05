@@ -50,6 +50,12 @@
             title: 'False information',
             category: ['False information', '不實資訊'],
             categoryIndex: 7
+        },
+        bot: {
+            label: 'Bot',
+            title: 'Bot or fake account',
+            category: ['Bot or fake account'],
+            categoryIndex: 7
         }
     };
 
