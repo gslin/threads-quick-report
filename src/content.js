@@ -439,6 +439,8 @@
         const buttons = getDialogActionButtons(dialog);
         const labelledButton = buttons.find(btn => matchesLabels(btn, DONE_LABELS));
         if (labelledButton) return labelledButton;
+        // The confirmation screen only has the Done button.
+        if (buttons.length === 1) return buttons[0];
 
         const optionButtons = new Set(getDialogOptionButtons(dialog));
         const dialogRect = dialog.getBoundingClientRect();
