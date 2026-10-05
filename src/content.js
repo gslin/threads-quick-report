@@ -49,7 +49,7 @@
             label: 'False',
             title: 'False information',
             category: ['False information', '不實資訊'],
-            categoryIndex: 7
+            categoryIndex: 8
         },
         bot: {
             label: 'Bot',
