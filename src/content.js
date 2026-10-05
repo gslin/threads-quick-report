@@ -54,7 +54,7 @@
         bot: {
             label: 'Bot',
             title: 'Bot or fake account',
-            category: ['Bot or fake account'],
+            category: ['Bot or fake account', 'Bot 或假帳號'],
             categoryIndex: 7
         }
     };
