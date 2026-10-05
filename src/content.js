@@ -15,7 +15,7 @@
             category: ['Bullying or unwanted contact', '霸凌或擾人的聯繫'],
             categoryIndex: 1,
             subcategory: ['Bullying or harassment', '霸凌或騷擾'],
-            subcategoryIndex: 0,
+            subcategoryIndex: 1,
             extraSteps: [
                 { labels: ["I don't know them", '我不認識對方'], fallbackIndex: -1 },
                 { labels: ['No', '否'], fallbackIndex: -1 }
@@ -35,7 +35,7 @@
             category: ['Violence, hate or exploitation', '暴力、仇恨或剝削'],
             categoryIndex: 3,
             subcategory: ['Hate speech or symbols', '仇恨言論或象徵符號'],
-            subcategoryIndex: 1
+            subcategoryIndex: 3
         },
         fraud: {
             label: 'Fraud',
