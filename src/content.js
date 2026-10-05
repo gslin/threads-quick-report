@@ -72,8 +72,9 @@
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    // RTL locales wrap untranslated labels in LRM/RLM marks.
     function normalizeText(text = '') {
-        return String(text ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+        return String(text ?? '').replace(/[\u200e\u200f]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
     }
 
     function getLast(arr) {
